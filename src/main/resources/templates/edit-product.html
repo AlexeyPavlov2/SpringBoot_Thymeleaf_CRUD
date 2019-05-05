@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Add product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <link th:href="@{/font-awesome/css/font-awesome.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<div class="container-fluid m-0">
+    <div class="row">
+        <div class="col-4 mb-1 mt-1 pb-1 pt-1" id="pageTitle">
+            <h3 class="text-info" th:text="${product.id == 0}?'Добавление товара':'Редактирование товара'"></h3>
+        </div>
+    </div>
+
+    <form method="POST" th:action="@{/{id}(id=${product.id})}" th:object="${product}">
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <input th:field="*{id}" type="hidden" class="form-control" id="productId"
+                           aria-describedby="productId">
+                </div>
+                <div class="form-group">
+                    <label for="productName">Наименование</label>
+                    <input th:field="*{name}" type="text" class="form-control" id="productName"
+                           aria-describedby="productName" title="Наименование должно быть не меньше 5 символов"
+                           placeholder="Введите наименование товара">
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Категория</label>
+                    <select th:field="*{category}" class="form-control" id="productCategory">
+                        <option th:each="category: ${categories}" th:value="${category.id}"
+                                th:text="${category.name}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Цена</label>
+                    <input th:field="*{price}" type="text" class="form-control" id="productPrice"
+                           aria-describedby="productName"
+                           placeholder="Введите стоимость товара">
+                    <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</span>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Описание</label>
+                    <textarea th:field="*{description}" class="form-control" id="productDescription"
+                              aria-describedby="productDescription" rows="5"
+                              placeholder="Введите описание товара"></textarea>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a th:href="@{/}" id="cancel" name="cancel" class="btn btn-secondary">Выход</a>
+    </form>
+</div>
+</body>
+</html>
