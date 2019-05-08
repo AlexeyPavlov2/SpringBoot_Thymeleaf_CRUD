@@ -3,6 +3,7 @@ package org.javatraining.thymeleafonetomanycrud.controller;
 import org.javatraining.thymeleafonetomanycrud.entity.Product;
 import org.javatraining.thymeleafonetomanycrud.repository.ProductCategoryRepository;
 import org.javatraining.thymeleafonetomanycrud.repository.ProductRepository;
+import org.javatraining.thymeleafonetomanycrud.util.AppUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -28,9 +29,12 @@ public class ProductController {
 
     private final ProductRepository productRepository;
 
-    public ProductController(ProductCategoryRepository categoryRepository, ProductRepository productRepository) {
+    private final AppUtil appUtil;
+
+    public ProductController(ProductCategoryRepository categoryRepository, ProductRepository productRepository, AppUtil appUtil) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.appUtil = appUtil;
     }
 
     @GetMapping("/edit-product/{id}")
@@ -78,11 +82,16 @@ public class ProductController {
         return "redirect:/";
     }
 
-    //@PostMapping("/product/save/{id}")
     @PostMapping("/{id}")
     public String saveProduct(@PathVariable("id") int id, Product product, Model model) {
         logger.info("Save product, id = {}", id);
         productRepository.save(product);
+        return "redirect:/";
+    }
+
+    @GetMapping("/filldb")
+    public String fillDb() {
+        appUtil.doFillDatabase();
         return "redirect:/";
     }
 
